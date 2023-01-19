@@ -27,19 +27,38 @@ function parseImage(source, photo_info) {
     photo_info.ratio = photo_info.height / photo_info.width;
     // get source image info
     EXIF.getData(source, function () {
+        let space = /\u0000|\x00/g;
         let exif_info = EXIF.getAllTags(source);
-        photo_info.make = exif_info.Make;
+        photo_info.make = exif_info.Make.replace(space, '');
         // set logo through the make
-        if (photo_info.make.toLowerCase().includes("nikon")) {
-            // photo_info.make = "NIKON";
+        let lower = photo_info.make.toLowerCase();
+        if (lower.includes("nikon")) {
             photo_info.logo = "nikon";
+        } else if (lower.includes("sony")) {
+            photo_info.logo = "sony";
+        } else if (lower.includes("canon")) {
+            photo_info.logo = "canon";
+        } else if (lower.includes("fujifilm")) {
+            photo_info.logo = "fujifilm";
+        } else if (lower.includes("lumix")) {
+            photo_info.logo = "lumix";
+        } else if (lower.includes("pentax")) {
+            photo_info.logo = "pentax";
+        } else if (lower.includes("olympus")) {
+            photo_info.logo = "olympus";
+        } else if (lower.includes("realme")) {
+            photo_info.logo = "realme";
+        } else if (lower.includes("huawei")) {
+            photo_info.logo = "huawei";
+        } else if (lower.includes("xiaomi")) {
+            photo_info.logo = "xiaomi";
         }
-        photo_info.module = exif_info.Model;
+        photo_info.module = exif_info.Model.replace(space, '');
         photo_info.focal_length = exif_info.FocalLength.valueOf();
         photo_info.f = exif_info.FNumber.valueOf();
         // get the shutter
         if (exif_info.ExposureTime.denominator > exif_info.ExposureTime.numerator) {
-            photo_info.shutter = "1/" + exif_info.ExposureTime.denominator / exif_info.ExposureTime.numerator;
+            photo_info.shutter = "1/" + parseInt(exif_info.ExposureTime.denominator / exif_info.ExposureTime.numerator);
         } else {
             photo_info.shutter = exif_info.ExposureTime.numerator / exif_info.ExposureTime.denominator + "/1";
         }
@@ -132,9 +151,15 @@ function setCanvasSize(canvas, width, ratio) {
     // 水印占比 1/water_mark_scale
     let water_mark_scale = 7;
     canvas.setAttribute("width", width + "px");
-    canvas.setAttribute("height", (ratio * width + ratio * width / water_mark_scale) + "px");
-    console.log(canvas.width)
-    console.log(canvas.offsetWidth)
+    console.log(ratio);
+    if(ratio < 1) {
+        canvas.setAttribute("height", (ratio * width + ratio * width / water_mark_scale) + "px");
+    } else {
+        water_mark_scale = water_mark_scale * ratio;
+        canvas.setAttribute("height", (ratio * width + width / water_mark_scale) + "px");
+    }
+    console.log(canvas.width);
+    console.log(canvas.height);
 }
 
 function updateHtmlPhotoInfo(photo_info) {
