@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <title>相机信息水印工具</title>
+        <!-- https://getbootstrap.net/docs/components/navbar/ -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="js/fontawesome.js"></script>
+        <style type="text/css">
+            canvas { border: 1px solid black;}
+        </style>
+    </head>
+
+    <body onload="render()">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand font-weight-bold">相机信息水印工具</a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">使用说明</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">自定义参数</a>
+                    </li>
+                </ul>
+                <a class="navbar-brand m-0 p-0" href="#" style="font-size: 1.5rem;">
+                <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+            </div>
+        </nav>
+
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col p-3 mr-1 border">
+                    <canvas id="preview" class="w-100"></canvas>
+                </div>
+                <div class="col p-3 ml-1 border d-flex flex-column">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-form-label col-2" for="make">制造商</label>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="make" placeholder="Maker" value="NIKON" required>
+                            </div>
+                            <label class="col-form-label col-2" for="module">型号</label>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="module" placeholder="module" value="Nikon D7000" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-2" for="focal_length">焦距</label>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="focal_length" placeholder="focal length" value="50" required>
+                            </div>
+                            <label class="col-form-label col-2" for="F">光圈</label>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="F" placeholder="Aperture" value="2.8" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-2" for="shutter">快门</label>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="shutter" placeholder="shutter" value="1/200" required>
+                            </div>
+                            <label class="col-form-label col-2" for="iso">ISO</label>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="iso" placeholder="ISO" value="100" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-2" for="time">时间</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="time" placeholder="自定义信息" value="1991/1/1 00:00:500" required> 
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-2" for="logo">Logo</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="logo" placeholder="为空使用内置商标" required>
+                            </div>
+                        </div>
+                        
+                    </form>
+                    <div class="flex-grow-1"></div>
+                    <div class="row">
+                        <input type="file" name="图片上传" id="img_uploader" accept="image/*" hidden onchange="img_uploader()">
+                        <button type="button" class="btn btn-outline-dark col m-2" onclick="img_uploader_btn()" id="img_btn">上传图片
+                        <span class="spinner-border spinner-border-sm" id="img_btn_ing" style="display: none;"></span></button>
+                        <button type="button" class="btn btn-outline-dark col m-2" id="render_btn" onclick="render_btn()">重新渲染</button>
+                        <button type="button" class="btn btn-outline-success col m-2" onclick="download_btn()">下载</button>
+                        <a id="download" hidden></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <canvas id="origin" hidden></canvas>
+        <img src="logo/nikon.jpg" id="nikon" hidden>
+    </body>
+
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/exif.js"></script>
+    <script src="js/canvas2image.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/main.js"></script>
+</html>
